@@ -1,2 +1,5 @@
-# Aldinamedicalcenter.co.ke
-ALDINA MEDICAL CENTRE website with frontend and backend
+node_modules/
+.env
+.DS_Store
+data/*.db
+npm-debug.log*

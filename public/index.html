@@ -1,0 +1,236 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const dataDir = path.join(__dirname, 'data');
+const dbPath = path.join(dataDir, 'medical.db');
+
+fs.mkdirSync(dataDir, { recursive: true });
+
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Database connection failed:', err.message);
+    process.exit(1);
+  }
+  console.log('Connected to SQLite database.');
+});
+
+const siteData = {
+  centerName: 'ALDINA MEDICAL CENTRE',
+  slogan: 'Compassionate care for every stage of life',
+  phone: '+254 700 123 456',
+  phoneHref: '+254700123456',
+  email: 'info@aldinamedicalcentre.co.ke',
+  address: 'Mombasa Road, Nairobi, Kenya',
+  hours: 'Mon - Sat: 8:00 AM - 8:00 PM',
+  emergency: '24/7 Emergency & Triage Support',
+  about: {
+    intro:
+      'ALDINA Medical Centre is a modern healthcare facility committed to making quality, patient-centered care accessible to individuals and families. We combine advanced medical expertise with a warm, human approach to support lasting health and wellbeing.',
+    mission:
+      'To deliver compassionate, reliable, and affordable medical services through innovative care, skilled professionals, and a patient-first philosophy.',
+    vision:
+      'To become the leading community healthcare resource for preventive, diagnostic, and treatment services in East Africa.'
+  },
+  stats: [
+    { label: 'Patients served', value: '18k+' },
+    { label: 'Expert clinicians', value: '24' },
+    { label: 'Specialty clinics', value: '12' },
+    { label: 'Average wait time', value: '< 15 min' }
+  ],
+  services: [
+    {
+      title: 'General Consultation',
+      description: 'Comprehensive checkups and individualized treatment plans for adults and children.',
+      icon: '🩺'
+    },
+    {
+      title: 'Family Medicine',
+      description: 'Ongoing healthcare support that addresses the needs of every member of your family.',
+      icon: '👨‍👩‍👧‍👦'
+    },
+    {
+      title: 'Diagnostic Imaging',
+      description: 'Advanced X-ray, ultrasound, and digital screening technologies for accurate diagnosis.',
+      icon: '🧪'
+    },
+    {
+      title: 'Pharmacy & Wellness',
+      description: 'Prescription fulfillment, preventive care guidance, and wellness product support.',
+      icon: '💊'
+    },
+    {
+      title: 'Maternal Care',
+      description: 'Dedicated support for prenatal, postnatal, and maternal health services.',
+      icon: '🤰'
+    },
+    {
+      title: 'Minor Procedures',
+      description: 'Safe and efficient treatment for minor clinical interventions and follow-up care.',
+      icon: '✂️'
+    }
+  ],
+  departments: [
+    'General Medicine',
+    'Pediatrics',
+    'Obstetrics & Gynecology',
+    'Dental Care',
+    'Pharmacy',
+    'Laboratory Services',
+    'Imaging & Diagnostics',
+    'Vaccination & Wellness'
+  ],
+  doctors: [
+    {
+      name: 'Dr. Aisha Mugo',
+      specialty: 'Family Physician',
+      bio: 'Leads preventive care and chronic disease management with a patient-first, holistic approach.',
+      initials: 'AM'
+    },
+    {
+      name: 'Dr. Kelvin Otieno',
+      specialty: 'Pediatric Specialist',
+      bio: 'Dedicated to ensuring every child receives compassionate, evidence-based care.',
+      initials: 'KO'
+    },
+    {
+      name: 'Dr. Nancy Wanjiku',
+      specialty: 'Obstetrician & Gynecologist',
+      bio: 'Supports women through every stage of life, from care planning to recovery and wellness.',
+      initials: 'NW'
+    },
+    {
+      name: 'Dr. Daniel Kibet',
+      specialty: 'Diagnostic Consultant',
+      bio: 'Specializes in imaging interpretation and coordinated treatment planning for complex cases.',
+      initials: 'DK'
+    }
+  ],
+  faqs: [
+    {
+      question: 'Do you accept walk-ins?',
+      answer: 'Yes. We accept walk-ins for general consultations and urgent assessments depending on clinic flow.'
+    },
+    {
+      question: 'Can I book an appointment online?',
+      answer: 'Absolutely. Use the appointment form on this site and our team will confirm your visit by phone or email.'
+    },
+    {
+      question: 'Do you offer maternal and child health services?',
+      answer: 'Yes. We provide prenatal, postnatal, pediatric, and family health support tailored to each patient.'
+    },
+    {
+      question: 'Are emergency services available?',
+      answer: 'Yes, we maintain emergency triage support for urgent medical situations.'
+    }
+  ]
+};
+
+function initializeDatabase() {
+  db.serialize(() => {
+    db.run(`
+      CREATE TABLE IF NOT EXISTS appointments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        full_name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        email TEXT,
+        department TEXT NOT NULL,
+        preferred_date TEXT NOT NULL,
+        notes TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    db.run(`
+      CREATE TABLE IF NOT EXISTS contacts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT,
+        phone TEXT,
+        message TEXT NOT NULL,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+  });
+}
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/api/site-data', (req, res) => {
+  return res.json(siteData);
+});
+
+app.get('/api/appointments', (req, res) => {
+  db.all('SELECT * FROM appointments ORDER BY created_at DESC', [], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ message: 'Unable to load appointments.' });
+    }
+    res.json(rows);
+  });
+});
+
+app.post('/api/appointments', (req, res) => {
+  const { fullName, phone, email, department, date, notes } = req.body;
+
+  if (!fullName || !phone || !department || !date) {
+    return res.status(400).json({ message: 'Full name, phone, department, and preferred date are required.' });
+  }
+
+  const sql = `
+    INSERT INTO appointments (full_name, phone, email, department, preferred_date, notes)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  db.run(sql, [fullName, phone, email || '', department, date, notes || ''], function (err) {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Appointment could not be saved.' });
+    }
+
+    return res.status(201).json({
+      message: 'Appointment booked successfully. Our team will contact you shortly.',
+      appointmentId: this.lastID
+    });
+  });
+});
+
+app.post('/api/contact', (req, res) => {
+  const { name, email, phone, message } = req.body;
+
+  if (!name || !message) {
+    return res.status(400).json({ message: 'Name and message are required.' });
+  }
+
+  const sql = `
+    INSERT INTO contacts (name, email, phone, message)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.run(sql, [name, email || '', phone || '', message], function (err) {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Message could not be sent.' });
+    }
+
+    return res.status(201).json({
+      message: 'Thank you for reaching out. We will reply as soon as possible.'
+    });
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+initializeDatabase();
+
+app.listen(PORT, () => {
+  console.log(`ALDINA Medical Centre website running at http://localhost:${PORT}`);
+});

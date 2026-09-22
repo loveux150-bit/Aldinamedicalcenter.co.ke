@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ALDINA Medical Centre offers compassionate, patient-focused medical services, preventive care, diagnostics, and specialist support."
+    />
+    <title>ALDINA Medical Centre | Modern Healthcare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand-block">
+          <div class="brand-mark">A</div>
+          <div>
+            <p class="brand-name" id="site-name">ALDINA Medical Centre</p>
+            <span class="brand-tag">Modern healthcare</span>
+          </div>
+        </div>
+        <nav class="main-nav">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#departments">Departments</a>
+          <a href="#doctors">Doctors</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a class="btn btn-primary" href="#appointment">Book Appointment</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Trusted health and wellness</p>
+            <h1 id="hero-title">Quality healthcare designed around your life.</h1>
+            <p id="hero-subtitle" class="hero-subtitle">
+              Compassionate care for every patient, every family, and every stage of life.
+            </p>
+            <div class="hero-actions">
+              <a href="#appointment" class="btn btn-primary">Book a visit</a>
+              <a href="#contact" class="btn btn-secondary">Talk to us</a>
+            </div>
+            <div class="hero-meta">
+              <div>
+                <strong>Call now</strong>
+                <p id="hero-phone">+254 700 123 456</p>
+              </div>
+              <div>
+                <strong>Clinic hours</strong>
+                <p id="hero-hours">Mon - Sat: 8:00 AM - 8:00 PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="hero-panel">
+            <div class="panel-card highlight-card">
+              <p class="card-label">Emergency care</p>
+              <h3 id="emergency-tag">24/7 Emergency & Triage Support</h3>
+              <ul>
+                <li>Rapid assessment and triage</li>
+                <li>Skilled nursing support</li>
+                <li>Family-centered care</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="container stats-grid" id="stats-grid"></div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container two-col">
+          <div>
+            <p class="eyebrow">About us</p>
+            <h2>Whole-person care with a community heart.</h2>
+            <p id="about-intro">
+              At ALDINA Medical Centre, we believe healthcare should be accessible, compassionate, and tailored to the human experience.
+            </p>
+          </div>
+          <div class="info-cards">
+            <div class="mini-card">
+              <h3>Our Mission</h3>
+              <p id="mission-text">To provide compassionate, reliable, and affordable medical services.</p>
+            </div>
+            <div class="mini-card">
+              <h3>Our Vision</h3>
+              <p id="vision-text">To become the leading healthcare resource for preventive and treatment services.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="section alt-bg">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Our services</p>
+            <h2>Healthcare solutions designed around your needs.</h2>
+          </div>
+          <div id="services-list" class="cards-grid"></div>
+        </div>
+      </section>
+
+      <section id="departments" class="section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Departments</p>
+            <h2>Specialized support from a multi-disciplinary team.</h2>
+          </div>
+          <div id="department-list" class="department-grid"></div>
+        </div>
+      </section>
+
+      <section id="doctors" class="section alt-bg">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Medical team</p>
+            <h2>Meet the specialists behind your care.</h2>
+          </div>
+          <div id="doctor-list" class="doctor-grid"></div>
+        </div>
+      </section>
+
+      <section id="appointment" class="section">
+        <div class="container appointment-grid">
+          <div>
+            <p class="eyebrow">Book an appointment</p>
+            <h2>Let us know how we can help.</h2>
+            <p class="support-copy">
+              Schedule a consultation with our doctors for general care, diagnosis, wellness planning, or specialist support.
+            </p>
+            <div class="appointment-points">
+              <div>
+                <strong>Fast scheduling</strong>
+                <p>Quick booking confirmations via phone or email.</p>
+              </div>
+              <div>
+                <strong>Patient-first care</strong>
+                <p>Thoughtful guidance for every step of treatment.</p>
+              </div>
+            </div>
+          </div>
+          <form id="appointmentForm" class="form-card">
+            <div class="field-row">
+              <label>
+                Full name
+                <input type="text" name="fullName" required placeholder="Your full name" />
+              </label>
+            </div>
+            <div class="field-row two-up">
+              <label>
+                Phone
+                <input type="tel" name="phone" required placeholder="07xx xxx xxx" />
+              </label>
+              <label>
+                Email
+                <input type="email" name="email" placeholder="you@example.com" />
+              </label>
+            </div>
+            <div class="field-row two-up">
+              <label>
+                Department
+                <select name="department" required>
+                  <option value="">Select department</option>
+                  <option>General Medicine</option>
+                  <option>Pediatrics</option>
+                  <option>Obstetrics & Gynecology</option>
+                  <option>Dental Care</option>
+                  <option>Laboratory Services</option>
+                  <option>Imaging & Diagnostics</option>
+                  <option>Vaccination & Wellness</option>
+                </select>
+              </label>
+              <label>
+                Preferred date
+                <input type="date" name="date" required />
+              </label>
+            </div>
+            <label>
+              Additional notes
+              <textarea name="notes" rows="4" placeholder="Tell us more about your needs"></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary btn-block">Request appointment</button>
+            <p id="appointmentMessage" class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="section alt-bg faq-section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">FAQs</p>
+            <h2>Common questions we hear from patients.</h2>
+          </div>
+          <div id="faq-list" class="faq-list"></div>
+        </div>
+      </section>
+
+      <section id="contact" class="section contact-section">
+        <div class="container contact-grid">
+          <div>
+            <p class="eyebrow">Contact us</p>
+            <h2>We’re here when you need care and guidance.</h2>
+            <div class="contact-info">
+              <div>
+                <strong>Address</strong>
+                <p id="contact-address">Mombasa Road, Nairobi, Kenya</p>
+              </div>
+              <div>
+                <strong>Phone</strong>
+                <p><a id="contact-phone" href="tel:+254700123456">+254 700 123 456</a></p>
+              </div>
+              <div>
+                <strong>Email</strong>
+                <p><a id="contact-email" href="mailto:info@aldinamedicalcentre.co.ke">info@aldinamedicalcentre.co.ke</a></p>
+              </div>
+              <div>
+                <strong>Hours</strong>
+                <p id="contact-hours">Mon - Sat: 8:00 AM - 8:00 PM</p>
+              </div>
+            </div>
+          </div>
+
+          <form id="contactForm" class="form-card">
+            <div class="field-row two-up">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Your name" required />
+              </label>
+              <label>
+                Phone
+                <input type="tel" name="phone" placeholder="Your phone" />
+              </label>
+            </div>
+            <label>
+              Email
+              <input type="email" name="email" placeholder="Your email" />
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4" placeholder="How can we help?" required></textarea>
+            </label>
+            <button type="submit" class="btn btn-primary btn-block">Send message</button>
+            <p id="contactMessage" class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>&copy; <span id="year"></span> ALDINA Medical Centre. All rights reserved.</p>
+        <p>Compassionate care for individuals, families, and communities.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
